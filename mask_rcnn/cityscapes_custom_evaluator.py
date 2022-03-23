@@ -7,6 +7,7 @@ import tempfile
 from collections import OrderedDict
 import torch
 from PIL import Image
+import matplotlib.cm as mcm
 
 from detectron2.data import MetadataCatalog
 from detectron2.utils import comm
@@ -15,7 +16,6 @@ from detectron2.utils.file_io import PathManager
 from detectron2.evaluation.evaluator import DatasetEvaluator
 
 from uncertainty import get_uncertainty
-
 
 class CityscapesEvaluator(DatasetEvaluator):
     """
@@ -89,6 +89,8 @@ class CityscapesPixelwiseInstanceEvaluator(CityscapesEvaluator):
                         )
                 inst_img_fname = os.path.join("/home/jacob/temp_results", basename + "_inst.png")
                 inst_img = inst_img / (np.max(inst_img))
+                cmap = mcm.get_cmap('viridis')
+                inst_img = cmap(inst_img)
                 Image.fromarray((inst_img * 255).astype("uint8")).save(inst_img_fname)
 
                 unc_img = get_uncertainty(output.pred_masks)
