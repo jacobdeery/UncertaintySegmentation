@@ -61,8 +61,6 @@ def wrap_model(model):
         masks = [[] for i in range(len(inputs))]
         img_sizes = [None] * len(inputs)
 
-        import pdb; pdb.set_trace()
-
         for _ in range(num_runs):
             outputs = model(inputs)
 
