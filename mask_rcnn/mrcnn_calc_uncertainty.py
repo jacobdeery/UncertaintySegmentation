@@ -63,15 +63,16 @@ def wrap_model(model):
         import pdb; pdb.set_trace()
 
         for _ in range(num_runs):
-            outputs = model(inputs)['instances']
+            outputs = model(inputs)
 
             for i, output in enumerate(outputs):
-                scores[i].extend(outputs.scores)
-                classes[i].extend(outputs.pred_classes)
+                output = output['instances'].to('cpu')
+                scores[i].extend(output.scores)
+                classes[i].extend(output.pred_classes)
 
-                masks[i].append(np.asarray(outputs.pred_masks))
+                masks[i].append(np.asarray(output.pred_masks))
 
-            img_sizes[i] = output.image_size()
+            img_sizes[i] = output.image_size
 
         for i in range(len(inputs)):
             concat_masks = np.concatenate(masks[i], axis=2)
