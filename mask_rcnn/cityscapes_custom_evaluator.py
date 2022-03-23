@@ -79,7 +79,6 @@ class CityscapesPixelwiseInstanceEvaluator(CityscapesEvaluator):
                         score = output.scores[i]
                         mask = output.pred_masks[i].numpy().astype("uint8")
                         inst_img[mask == 1] = i + 1
-                        # import pdb; pdb.set_trace()
                         png_filename = os.path.join(
                             self._temp_dir, basename + "_{}_{}.png".format(i, classes)
                         )
