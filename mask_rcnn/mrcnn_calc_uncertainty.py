@@ -72,7 +72,7 @@ def wrap_model(model):
 
                 masks[i].append(np.asarray(output.pred_masks))
 
-            img_sizes[i] = output.image_size
+                img_sizes[i] = output.image_size
 
         for i in range(len(inputs)):
             concat_masks = np.concatenate(masks[i], axis=2)
