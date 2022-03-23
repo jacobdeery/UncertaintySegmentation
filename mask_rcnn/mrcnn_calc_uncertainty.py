@@ -51,12 +51,16 @@ def wrap_model(model):
     num_runs = 5
 
     def run_model(inputs):
+        model.eval()
+
         scores = []
         classes = []
         masks = []
 
-        for _ in num_runs:
-            outputs = model(inputs).to('cpu')
+        import pdb; pdb.set_trace()
+
+        for _ in range(num_runs):
+            outputs = model(inputs)['instances'].to('cpu')
             scores.extend(outputs.scores)
             classes.extend(outputs.pred_classes)
 
