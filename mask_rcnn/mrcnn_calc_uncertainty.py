@@ -53,24 +53,31 @@ def wrap_model(model):
     def run_model(inputs):
         model.eval()
 
-        scores = []
-        classes = []
-        masks = []
+        wrapped_outputs = [None] * len(inputs)
+
+        scores = [[] for i in range(len(inputs))]
+        classes = [[] for i in range(len(inputs))]
+        masks = [[] for i in range(len(inputs))]
+        img_sizes = [None] * len(inputs)
 
         import pdb; pdb.set_trace()
 
         for _ in range(num_runs):
-            outputs = model(inputs)['instances'].to('cpu')
-            scores.extend(outputs.scores)
-            classes.extend(outputs.pred_classes)
+            outputs = model(inputs)['instances']
 
-            masks.append(np.asarray(outputs.pred_masks))
+            for i, output in enumerate(outputs):
+                scores[i].extend(outputs.scores)
+                classes[i].extend(outputs.pred_classes)
 
-        masks = np.concatenate(masks, axis=2)
+                masks[i].append(np.asarray(outputs.pred_masks))
 
-        image_size = outputs.image_size()
+            img_sizes[i] = output.image_size()
 
-        return Instances(image_size, scores=scores, pred_classes=classes, pred_masks=masks)
+        for i in range(len(inputs)):
+            concat_masks = np.concatenate(masks[i], axis=2)
+            wrapped_outputs[i] = Instances(img_sizes[i], scores=scores[i], pred_classes=classes[i], pred_masks=concat_masks)
+
+        return wrapped_outputs
 
     return run_model
 
