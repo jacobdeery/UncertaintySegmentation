@@ -12,7 +12,7 @@ from detectron2.data import MetadataCatalog
 from detectron2.utils import comm
 from detectron2.utils.file_io import PathManager
 
-from .evaluator import DatasetEvaluator
+from detectron2.evaluation.evaluator import DatasetEvaluator
 
 from uncertainty import get_uncertainty
 
