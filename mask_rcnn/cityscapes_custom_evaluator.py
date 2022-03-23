@@ -89,12 +89,11 @@ class CityscapesPixelwiseInstanceEvaluator(CityscapesEvaluator):
                         )
                 inst_img_fname = os.path.join("/home/jacob/temp_results", basename + "_inst.png")
                 inst_img = inst_img / (np.max(inst_img))
-                cmap = mcm.get_cmap('viridis')
-                inst_img = cmap(inst_img)
                 Image.fromarray((inst_img * 255).astype("uint8")).save(inst_img_fname)
 
+                cmap = mcm.get_cmap('viridis')
                 unc_img = get_uncertainty(output.pred_masks)
-                unc_img = unc_img / (np.max(unc_img))
+                unc_img = cmap(unc_img / (np.max(unc_img)))
                 unc_img_fname = os.path.join("/home/jacob/temp_results", basename + "_unc.png")
                 Image.fromarray((unc_img * 255).astype("uint8")).save(unc_img_fname)
             else:
