@@ -75,8 +75,8 @@ def wrap_model(model):
                 img_sizes[i] = output.image_size
 
         for i in range(len(inputs)):
-            concat_masks = np.concatenate(masks[i], axis=2)
-            wrapped_outputs[i] = Instances(img_sizes[i], scores=scores[i], pred_classes=classes[i], pred_masks=concat_masks)
+            concat_masks = np.concatenate(masks[i], axis=0)
+            wrapped_outputs[i] = {'instances': Instances(img_sizes[i], scores=scores[i], pred_classes=classes[i], pred_masks=concat_masks)}
 
         return wrapped_outputs
 
