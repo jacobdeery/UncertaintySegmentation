@@ -22,6 +22,7 @@ import os
 from collections import OrderedDict
 
 import numpy as np
+import torch
 
 import detectron2.utils.comm as comm
 from detectron2.checkpoint import DetectionCheckpointer
@@ -75,7 +76,7 @@ def wrap_model(model):
                 img_sizes[i] = output.image_size
 
         for i in range(len(inputs)):
-            concat_masks = np.concatenate(masks[i], axis=0)
+            concat_masks = torch.from_numpy(np.concatenate(masks[i], axis=0))
             wrapped_outputs[i] = {'instances': Instances(img_sizes[i], scores=scores[i], pred_classes=classes[i], pred_masks=concat_masks)}
 
         return wrapped_outputs
