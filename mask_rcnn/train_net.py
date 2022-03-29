@@ -28,7 +28,8 @@ from detectron2.data import MetadataCatalog
 from detectron2.engine import DefaultTrainer, default_argument_parser, default_setup, hooks, launch
 from detectron2.modeling import GeneralizedRCNNWithTTA
 
-from cityscapes_custom_evaluator import CityscapesPixelwiseInstanceEvaluator
+from evaluation.cityscapes_custom_evaluator import CityscapesPixelwiseInstanceEvaluator
+from modeling.box_head import FastRCNNConvFCHeadWithDropout
 
 
 class Trainer(DefaultTrainer):

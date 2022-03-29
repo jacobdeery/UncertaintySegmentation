@@ -22,7 +22,7 @@ MODEL:
     NAME: "StandardROIHeads"
     IN_FEATURES: ["p2", "p3", "p4", "p5"]
   ROI_BOX_HEAD:
-    NAME: "FastRCNNConvFCHead"
+    NAME: "FastRCNNConvFCHeadWithDropout"
     NUM_FC: 2
     POOLER_RESOLUTION: 7
   ROI_MASK_HEAD:

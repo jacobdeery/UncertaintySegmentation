@@ -16,11 +16,6 @@ this file as an example of how to use the library.
 You may want to write your own script with your datasets and other customizations.
 """
 
-import imp
-import logging
-import os
-from collections import OrderedDict
-
 import numpy as np
 import torch
 
@@ -33,6 +28,7 @@ from detectron2.modeling import GeneralizedRCNNWithTTA
 from detectron2.structures import Instances
 
 from cityscapes_custom_evaluator import CityscapesPixelwiseInstanceEvaluator
+from modeling.box_head import FastRCNNConvFCHeadWithDropout
 
 
 class Trainer(DefaultTrainer):

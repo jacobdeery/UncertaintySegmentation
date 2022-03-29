@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from uncertainty import get_uncertainty
+from .uncertainty import get_uncertainty
 
 
 masks = [

@@ -16,7 +16,7 @@ from detectron2.utils.visualizer import Visualizer
 
 from detectron2.evaluation.evaluator import DatasetEvaluator
 
-from uncertainty import get_uncertainty
+from .uncertainty import get_uncertainty
 
 class CityscapesEvaluator(DatasetEvaluator):
     """
@@ -114,7 +114,7 @@ class CityscapesPixelwiseInstanceEvaluator(CityscapesEvaluator):
         comm.synchronize()
         if comm.get_rank() > 0:
             return
-        import mask_rcnn.pixelwise_instance_evaluation as cityscapes_eval
+        import mask_rcnn.evaluation.pixelwise_instance_evaluation as cityscapes_eval
 
         self._logger.info("Evaluating results under {} ...".format(self._temp_dir))
 
