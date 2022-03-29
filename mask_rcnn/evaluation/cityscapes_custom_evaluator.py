@@ -74,7 +74,7 @@ class CityscapesPixelwiseInstanceEvaluator(CityscapesEvaluator):
                 inst_img = np.zeros(output.pred_masks[0].numpy().shape[0:2])
                 with open(pred_txt, "w") as fout:
                     for i in range(num_instances):
-                        pred_class = output.pred_classes[i]
+                        pred_class = int(output.pred_classes[i])
                         classes = self._metadata.thing_classes[pred_class]
                         class_id = name2label[classes].id
                         score = output.scores[i]
