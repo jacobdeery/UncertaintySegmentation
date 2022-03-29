@@ -16,11 +16,6 @@ this file as an example of how to use the library.
 You may want to write your own script with your datasets and other customizations.
 """
 
-import imp
-import logging
-import os
-from collections import OrderedDict
-
 import detectron2.utils.comm as comm
 from detectron2.checkpoint import DetectionCheckpointer
 from detectron2.config import get_cfg
@@ -60,19 +55,6 @@ def setup(args):
 def main(args):
     cfg = setup(args)
 
-    if args.eval_only:
-        model = Trainer.build_model(cfg)
-        DetectionCheckpointer(model, save_dir=cfg.OUTPUT_DIR).resume_or_load(
-            cfg.MODEL.WEIGHTS, resume=args.resume
-        )
-        res = Trainer.test(cfg, model)
-        return res
-
-    """
-    If you'd like to do anything fancier than the standard training logic,
-    consider writing your own training loop (see plain_train_net.py) or
-    subclassing the trainer.
-    """
     trainer = Trainer(cfg)
     trainer.resume_or_load(resume=args.resume)
 
