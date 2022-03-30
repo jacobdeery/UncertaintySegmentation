@@ -27,7 +27,7 @@ from detectron2.engine import DefaultTrainer, default_argument_parser, default_s
 from detectron2.modeling import GeneralizedRCNNWithTTA
 from detectron2.structures import Instances
 
-from cityscapes_custom_evaluator import CityscapesPixelwiseInstanceEvaluator
+from evaluation.cityscapes_custom_evaluator import CityscapesPixelwiseInstanceEvaluator
 from modeling.box_head import FastRCNNConvFCHeadWithDropout
 
 
