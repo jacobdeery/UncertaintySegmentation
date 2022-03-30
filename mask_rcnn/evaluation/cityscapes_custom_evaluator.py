@@ -96,7 +96,6 @@ class CityscapesPixelwiseInstanceEvaluator(CityscapesEvaluator):
                 inst_img = viz.draw_instance_predictions(output)
                 inst_img_fname = os.path.join("/home/jacob/temp_results", basename + "_inst.png")
                 inst_img.save(inst_img_fname)
-                Image.fromarray((inst_img * 255).astype("uint8")).save(inst_img_fname)
 
                 cmap = mcm.get_cmap('viridis')
                 unc_img = get_uncertainty_centroid(output.pred_masks)
