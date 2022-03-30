@@ -9,7 +9,7 @@ def get_uncertainty_exist(instances):
     keep_idxs = [nms(instances.pred_boxes, instances.scores, iou) for iou in ious]
 
     masks_orig = np.asarray(instances.pred_masks).astype(int)
-    num_inst = np.zeros((num_ious, *masks_orig.shape))
+    num_inst = np.zeros((num_ious, *masks_orig.shape[1:]))
 
     for i, keep in enumerate(keep_idxs):
         num_inst[i, :, :] = np.max(0, np.sum(masks_orig[keep], axis=0) - 1)
