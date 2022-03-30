@@ -91,7 +91,7 @@ class CityscapesPixelwiseInstanceEvaluator(CityscapesEvaluator):
                 #             "{} {} {}\n".format(os.path.basename(png_filename), class_id, score)
                 #         )
 
-                img_in = input['image'].numpy().transpose([1, 2, 0])
+                img_in = input['image'].numpy().transpose([1, 2, 0])[:, :, ::-1]
                 viz = Visualizer(img_in)
                 inst_img = viz.draw_instance_predictions(output)
                 inst_img_fname = os.path.join("/home/jacob/temp_results", basename + "_inst.png")
