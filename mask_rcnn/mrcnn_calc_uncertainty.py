@@ -18,6 +18,7 @@ You may want to write your own script with your datasets and other customization
 
 import numpy as np
 import torch
+from torch import nn
 
 import detectron2.utils.comm as comm
 from detectron2.checkpoint import DetectionCheckpointer
@@ -44,11 +45,17 @@ class Trainer(DefaultTrainer):
         return CityscapesPixelwiseInstanceEvaluator(dataset_name)
 
 
+def apply_dropout(m):
+    if type(m) == nn.Dropout:
+        m.train()
+
+
 def wrap_model(model):
     num_runs = 5
 
     def run_model(inputs):
         model.eval()
+        model.apply(apply_dropout)
 
         wrapped_outputs = [None] * len(inputs)
 
