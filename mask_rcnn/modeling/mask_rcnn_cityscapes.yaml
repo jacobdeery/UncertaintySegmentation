@@ -5,6 +5,7 @@ MODEL:
   WEIGHTS: "/home/jacob/models/MaskRCNN/model_base.pkl"
   MASK_ON: True
   ROI_HEADS:
+    NMS_THRESH_TEST: 0  # Temporary; for uncertainty visualization only
     NUM_CLASSES: 8
 # This is similar to the setting used in Mask R-CNN paper, Appendix A
 # But there are some differences, e.g., we did not initialize the output
