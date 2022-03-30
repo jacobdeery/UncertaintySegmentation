@@ -3,13 +3,20 @@ from torchvision.ops import nms
 
 
 def get_uncertainty_exist(instances):
-    keep = nms(instances.pred_boxes, instances.scores, 0.5)
+    num_ious = 20
+
+    ious = np.linspace(0, 1, num_ious)
+    keep_idxs = [nms(instances.pred_boxes, instances.scores, iou) for iou in ious]
 
     masks_orig = np.asarray(instances.pred_masks).astype(int)
-    num_inst_orig = np.sum(masks_orig, axis=0)
-    num_inst_nms = np.sum(masks_orig[keep], axis=0)
+    num_inst = np.zeros((num_ious, *masks_orig.shape))
 
-    return np.nan_to_num(num_inst_orig - num_inst_nms)
+    for i, keep in enumerate(keep_idxs):
+        num_inst[i, :, :] = np.max(0, np.sum(masks_orig[keep], axis=0) - 1)
+
+    uncertainty = np.sum(num_inst, axis=0)
+
+    return uncertainty
 
 
 def get_uncertainty_centroid(masks):
