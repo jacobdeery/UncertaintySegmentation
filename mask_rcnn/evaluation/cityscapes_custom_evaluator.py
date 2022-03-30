@@ -72,29 +72,31 @@ class CityscapesPixelwiseInstanceEvaluator(CityscapesEvaluator):
                 output = output["instances"].to(self._cpu_device)
                 num_instances = len(output)
                 inst_img = np.zeros(output.pred_masks[0].numpy().shape[0:2])
-                with open(pred_txt, "w") as fout:
-                    for i in range(num_instances):
-                        pred_class = int(output.pred_classes[i])
-                        classes = self._metadata.thing_classes[pred_class]
-                        class_id = name2label[classes].id
-                        score = output.scores[i]
-                        mask = output.pred_masks[i].numpy().astype("uint8")
-                        inst_img[mask == 1] = i + 1
-                        png_filename = os.path.join(
-                            self._temp_dir, basename + "_{}_{}.png".format(i, classes)
-                        )
 
-                        Image.fromarray((mask * 255).astype("uint8")).save(png_filename)
-                        fout.write(
-                            "{} {} {}\n".format(os.path.basename(png_filename), class_id, score)
-                        )
+                # NOTE(jacob): Temporarily commenting this to reduce eval time
+                # with open(pred_txt, "w") as fout:
+                #     for i in range(num_instances):
+                #         pred_class = int(output.pred_classes[i])
+                #         classes = self._metadata.thing_classes[pred_class]
+                #         class_id = name2label[classes].id
+                #         score = output.scores[i]
+                #         mask = output.pred_masks[i].numpy().astype("uint8")
+                #         inst_img[mask == 1] = i + 1
+                #         png_filename = os.path.join(
+                #             self._temp_dir, basename + "_{}_{}.png".format(i, classes)
+                #         )
+
+                #         Image.fromarray((mask * 255).astype("uint8")).save(png_filename)
+                #         fout.write(
+                #             "{} {} {}\n".format(os.path.basename(png_filename), class_id, score)
+                #         )
 
                 img_in = input['image'].numpy().transpose([1, 2, 0])
                 viz = Visualizer(img_in)
                 inst_img = viz.draw_instance_predictions(output)
                 inst_img_fname = os.path.join("/home/jacob/temp_results", basename + "_inst.png")
                 inst_img.save(inst_img_fname)
-                # Image.fromarray((inst_img * 255).astype("uint8")).save(inst_img_fname)
+                Image.fromarray((inst_img * 255).astype("uint8")).save(inst_img_fname)
 
                 cmap = mcm.get_cmap('viridis')
                 unc_img = get_uncertainty_centroid(output.pred_masks)
@@ -103,7 +105,7 @@ class CityscapesPixelwiseInstanceEvaluator(CityscapesEvaluator):
                 Image.fromarray((unc_img * 255).astype("uint8")).save(unc_img_fname)
 
                 unc_img_exist = get_uncertainty_exist(output)
-                unc_img_exist = cmap(unc_img / (np.max(unc_img_exist)))
+                unc_img_exist = cmap(unc_img_exist / (np.max(unc_img_exist)))
                 unc_img_exist_fname = os.path.join("/home/jacob/temp_results", basename + "_unc_exist.png")
                 Image.fromarray((unc_img_exist * 255).astype("uint8")).save(unc_img_exist_fname)
             else:
