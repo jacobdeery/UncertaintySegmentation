@@ -7,9 +7,7 @@ def get_uncertainty_exist(instances):
 
     masks_orig = np.asarray(instances.pred_masks).astype(int)
     num_inst_orig = np.sum(masks_orig, axis=0)
-
-    import pdb; pdb.set_trace()
-    num_inst_nms = np.zeros_like(num_inst_orig)
+    num_inst_nms = np.sum(masks_orig[keep], axis=0)
 
     return np.nan_to_num(num_inst_orig - num_inst_nms)
 
