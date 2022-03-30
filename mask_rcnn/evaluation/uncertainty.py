@@ -12,7 +12,7 @@ def get_uncertainty_exist(instances):
     num_inst = np.zeros((num_ious, *masks_orig.shape[1:]))
 
     for i, keep in enumerate(keep_idxs):
-        num_inst[i, :, :] = np.max(0, np.sum(masks_orig[keep], axis=0) - 1)
+        num_inst[i, :, :] = np.maximum(0, np.sum(masks_orig[keep], axis=0) - 1)
 
     uncertainty = np.sum(num_inst, axis=0)
 
