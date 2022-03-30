@@ -62,6 +62,7 @@ def wrap_model(model):
         scores = [[] for i in range(len(inputs))]
         classes = [[] for i in range(len(inputs))]
         masks = [[] for i in range(len(inputs))]
+        boxes = [[] for i in range(len(inputs))]
         img_sizes = [None] * len(inputs)
 
         for _ in range(num_runs):
@@ -73,16 +74,19 @@ def wrap_model(model):
                 classes[i].extend(output.pred_classes)
 
                 masks[i].append(np.asarray(output.pred_masks))
+                boxes[i].append(np.asarray(output.pred_boxes.tensor))
 
                 img_sizes[i] = output.image_size
 
         for i in range(len(inputs)):
             concat_masks = torch.from_numpy(np.concatenate(masks[i], axis=0))
+            concat_boxes = torch.from_numpy(np.concatenate(boxes[i], axis=0))
             wrapped_outputs[i] = {
                 'instances': Instances(img_sizes[i],
                                        scores=torch.Tensor(scores[i]),
                                        pred_classes=torch.Tensor(classes[i]),
-                                       pred_masks=concat_masks)
+                                       pred_masks=concat_masks,
+                                       pred_boxes=concat_boxes)
                 }
 
         return wrapped_outputs

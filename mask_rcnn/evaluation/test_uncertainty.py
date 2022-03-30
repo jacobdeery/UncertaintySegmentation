@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from .uncertainty import get_uncertainty
+from .uncertainty import get_uncertainty_centroid
 
 
 masks = [
@@ -35,7 +35,7 @@ masks = [
     ]),
 ]
 
-unc = get_uncertainty(masks)
+unc = get_uncertainty_centroid(masks)
 
 plt.imshow(unc)
 plt.show()

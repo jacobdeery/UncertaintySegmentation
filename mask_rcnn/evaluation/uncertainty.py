@@ -1,7 +1,20 @@
 import numpy as np
+from torchvision.ops import nms
 
 
-def get_uncertainty(masks):
+def get_uncertainty_exist(instances):
+    keep = nms(instances.pred_boxes, instances.scores, 0.5)
+
+    masks_orig = np.asarray(instances.pred_masks).astype(int)
+    num_inst_orig = np.sum(masks_orig, axis=0)
+
+    import pdb; pdb.set_trace()
+    num_inst_nms = np.zeros_like(num_inst_orig)
+
+    return np.nan_to_num(num_inst_orig - num_inst_nms)
+
+
+def get_uncertainty_centroid(masks):
     h, w = masks[0].shape
 
     total_masks = len(masks)

@@ -16,7 +16,7 @@ from detectron2.utils.visualizer import Visualizer
 
 from detectron2.evaluation.evaluator import DatasetEvaluator
 
-from .uncertainty import get_uncertainty
+from .uncertainty import get_uncertainty_centroid, get_uncertainty_exist
 
 class CityscapesEvaluator(DatasetEvaluator):
     """
@@ -97,10 +97,15 @@ class CityscapesPixelwiseInstanceEvaluator(CityscapesEvaluator):
                 # Image.fromarray((inst_img * 255).astype("uint8")).save(inst_img_fname)
 
                 cmap = mcm.get_cmap('viridis')
-                unc_img = get_uncertainty(output.pred_masks)
+                unc_img = get_uncertainty_centroid(output.pred_masks)
                 unc_img = cmap(unc_img / (np.max(unc_img)))
-                unc_img_fname = os.path.join("/home/jacob/temp_results", basename + "_unc.png")
+                unc_img_fname = os.path.join("/home/jacob/temp_results", basename + "_unc_centroid.png")
                 Image.fromarray((unc_img * 255).astype("uint8")).save(unc_img_fname)
+
+                unc_img_exist = get_uncertainty_exist(output)
+                unc_img_exist = cmap(unc_img / (np.max(unc_img_exist)))
+                unc_img_exist_fname = os.path.join("/home/jacob/temp_results", basename + "_unc_exist.png")
+                Image.fromarray((unc_img_exist * 255).astype("uint8")).save(unc_img_exist_fname)
             else:
                 # Cityscapes requires a prediction file for every ground truth image.
                 with open(pred_txt, "w") as fout:
